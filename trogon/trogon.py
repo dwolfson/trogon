@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+import sys
 import os
 import shlex
 from pathlib import Path
@@ -258,10 +258,12 @@ class Trogon(App):
                         f"Running [b cyan]{self.app_name} {' '.join(shlex.quote(s) for s in self.post_run_command)}[/]"
                     )
 
-                    split_app_name = shlex.split(self.app_name)
+                    # split_app_name = shlex.split(self.app_name)
                     program_name = shlex.split(self.app_name)[0]
-                    arguments = [*split_app_name, *self.post_run_command]
-                    os.execvp(program_name, arguments)
+                    arguments = [sys.executable, program_name, *self.post_run_command]
+                    os.execvp(sys.executable, arguments)
+                    # arguments = [*split_app_name, *self.post_run_command]
+                    # os.execvp(program_name, arguments)
 
     @on(CommandForm.Changed)
     def update_command_to_run(self, event: CommandForm.Changed):
